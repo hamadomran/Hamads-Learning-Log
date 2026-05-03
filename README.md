@@ -9,22 +9,32 @@ Each numbered folder is a standalone project. I work through the material myself
 ```
 Hamads-Learning-Log/
 ├── 01-Micrograd/      # Tiny scalar autograd engine, after Karpathy's micrograd
-├── 02-...             # (future projects)
+├── 02-Makemore/       # Character-level language models, after Karpathy's makemore
+├── 03-...             # (future projects)
 └── CLAUDE.md          # Coaching-mode rules for Claude in this repo
 ```
 
 ## Projects
 
-### 01-Micrograd
+### 01-Micrograd — done
 A from-scratch reimplementation of [Karpathy's `micrograd`](https://github.com/karpathy/micrograd) — a minimal scalar-valued autograd engine plus a small neural-net library on top of it.
 
+Built end-to-end:
+- A `Value` class that wraps scalars and tracks the computation graph (parents, op, gradient)
+- Graph visualization with `graphviz`
+- Manual backpropagation via the chain rule, then automated per-operation `_backward` closures
+- A single neuron with `tanh` activation, extended to `Neuron`/`Layer`/`MLP` classes with a `parameters()` helper
+- Topological sort + reverse walk for the full backward pass
+- A working gradient-descent training loop on a tiny dataset (loss decreases as expected)
+- Gradient comparison against PyTorch to verify correctness
+
+### 02-Makemore — in progress
+A from-scratch reimplementation of [Karpathy's `makemore`](https://github.com/karpathy/makemore) — character-level language models trained on a list of ~32k names.
+
 Working through:
-- Building a `Value` class that wraps scalars and tracks the computation graph
-- Visualizing the graph with `graphviz`
-- Manual backpropagation via the chain rule
-- Modeling a single neuron with `tanh` activation
-- Per-operation `_backward` closures that propagate gradient via the chain rule
-- (next) The public `.backward()` method via topological sort
+- Building a bigram counting model with boundary tokens (`.`) for word start/end
+- (next) Reshaping counts into a 27×27 tensor, normalizing to probabilities, sampling new names, and computing the negative log-likelihood loss
+- (later) Reframing the same problem as a single-layer neural net trained with gradient descent, then expanding to deeper models
 
 ## Notes on the format
 
